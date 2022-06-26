@@ -16,8 +16,12 @@ class Player
 
   def select_move
     # Complete this
-    move = get_moves("Master select your move", @pokemon.moves).downcase
-    @pokemon.set_current_move(Pokedex::MOVES[move])
+    move = get_moves("#{@name} "+"select".colorize(:blue)+" your move", @pokemon.moves.map{|x| x.capitalize}).downcase
+    @pokemon.set_current_move(move)
+  end
+  private
+  def get_moves(prompt, moves)
+    get_with_options(prompt, moves)
   end
 end
 
@@ -25,7 +29,7 @@ end
 class Bot < Player
   def select_move
     move = @pokemon.moves.sample
-    @pokemon.set_current_move = Pokedex::MOVES[move]
+    @pokemon.set_current_move(Pokedex::MOVES[move])
   end
 end
 #Gymleader
@@ -44,12 +48,14 @@ class BotTrain < Bot
   def initialize
     list_pokemons = Pokedex::POKEMONS.keys
     selected_pokemon = list_pokemons.sample
+    #selected_pokemon = "Spearow"
     level = rand(1..10)
+    #level =1
     super("Random Person", selected_pokemon, selected_pokemon.capitalize, level)
   end
 
   def select_move
     move = @pokemon.moves.sample
-    @pokemon.set_current_move(Pokedex::MOVES[move])
+    @pokemon.set_current_move(Pokedex::MOVES[move][:name])
   end
 end
